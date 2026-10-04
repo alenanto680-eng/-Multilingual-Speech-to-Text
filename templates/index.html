@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bolo · Indic Speech to Text</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="wrap">
+  <!-- Main Content Grid -->
+  <main>
+    <!-- Left Card: Speech input -->
+    <section class="panel">
+      <!-- Header with Speech input title and Dark/Light Mode switch on the right -->
+      <div class="panel-header">
+        <h2 class="panel-title">Speech input</h2>
+        
+        <!-- Dark / Light Mode Switch on the right side of Speech input -->
+        <div class="theme-toggle-wrap" id="theme-toggle" role="button" aria-label="Toggle light and dark mode" tabindex="0">
+          <span class="theme-icon" aria-hidden="true">
+            <!-- Sun icon -->
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+          </span>
+          <div class="theme-switch" aria-hidden="true">
+            <div class="theme-switch-knob"></div>
+          </div>
+          <span class="theme-icon" aria-hidden="true">
+            <!-- Moon icon -->
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <!-- Language selector -->
+      <div class="field">
+        <label class="field-label" id="lang-label">Language</label>
+        
+        <!-- Standard select preserved for functionality -->
+        <select id="lang" aria-labelledby="lang-label"></select>
+
+        <!-- Custom Styled Dropdown matching design -->
+        <div class="custom-select-wrap" id="custom-select-wrap">
+          <button type="button" class="custom-select-btn" id="custom-select-btn" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="lang-label">
+            <div class="custom-select-left">
+              <span class="flag-box">
+                <!-- Indian Flag SVG -->
+                <svg width="24" height="16" viewBox="0 0 24 16" rx="2" style="border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,0.08);overflow:hidden;">
+                  <rect width="24" height="5.33" fill="#FF9933"/>
+                  <rect y="5.33" width="24" height="5.34" fill="#FFFFFF"/>
+                  <rect y="10.67" width="24" height="5.33" fill="#128807"/>
+                  <circle cx="12" cy="8" r="2.2" fill="none" stroke="#000080" stroke-width="0.6"/>
+                  <circle cx="12" cy="8" r="0.6" fill="#000080"/>
+                </svg>
+              </span>
+              <div class="lang-text-group">
+                <span class="lang-en" id="selected-lang-en">Malayalam</span>
+                <span class="lang-native" id="selected-lang-native">മലയാളം</span>
+              </div>
+            </div>
+            <svg class="select-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+
+          <!-- Dropdown Popup -->
+          <div class="select-dropdown-menu" id="select-dropdown-menu" role="listbox">
+            <div class="dropdown-search-box">
+              <input type="text" class="dropdown-search-input" id="lang-search" placeholder="Search language..." autocomplete="off">
+            </div>
+            <ul class="dropdown-list" id="dropdown-list"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Speed Toggle -->
+      <div class="field">
+        <label class="field-label">Speed</label>
+        <div class="seg" role="group" aria-label="Speed">
+          <button id="m-ctc" class="on" type="button">Fast</button>
+          <button id="m-rnnt" type="button">More Accurate</button>
+        </div>
+      </div>
+
+      <!-- Mic Stage with Flanking Sound Bars -->
+      <div class="stage">
+        <div class="mic-visualizer-container">
+          <!-- Left Wave Bars -->
+          <div class="wave-group wg-left" aria-hidden="true">
+            <span class="wave-bar-stem w1"></span>
+            <span class="wave-bar-stem w2"></span>
+            <span class="wave-bar-stem w3"></span>
+            <span class="wave-bar-stem w4"></span>
+            <span class="wave-bar-stem w5"></span>
+            <span class="wave-bar-stem w6"></span>
+          </div>
+
+          <!-- Mic Button with Pulsing Ring -->
+          <div class="mic-btn-wrapper">
+            <div class="mic-ripple-ring" aria-hidden="true"></div>
+            <button id="mic" type="button" aria-label="Start speaking">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="3" width="6" height="12" rx="3"/>
+                <path d="M5 10a7 7 0 0 0 14 0"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+                <line x1="8" y1="21" x2="16" y2="21"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Right Wave Bars -->
+          <div class="wave-group wg-right" aria-hidden="true">
+            <span class="wave-bar-stem w1"></span>
+            <span class="wave-bar-stem w2"></span>
+            <span class="wave-bar-stem w3"></span>
+            <span class="wave-bar-stem w4"></span>
+            <span class="wave-bar-stem w5"></span>
+            <span class="wave-bar-stem w6"></span>
+          </div>
+        </div>
+
+        <!-- Status Indicator -->
+        <div class="status-line">
+          <span class="status-dot" id="status-dot"></span>
+          <span id="state">Tap to start speaking</span>
+        </div>
+        <div id="sub"></div>
+      </div>
+    </section>
+
+    <!-- Right Card: Transcription -->
+    <section class="panel transcription-panel">
+      <div class="panel-header">
+        <h2 class="panel-title">Transcription</h2>
+      </div>
+
+      <div class="transcription-box">
+        <textarea id="out" placeholder="Speak a sentence, then pause. The text appears here."></textarea>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="bottom-bar">
+        <div class="timing-wrapper">
+          <span class="timing-icon" aria-hidden="true">
+            <!-- Stopwatch Icon -->
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="13" r="8"/>
+              <path d="M12 9v4l2 2"/>
+              <path d="M5 3L2 6"/>
+              <path d="M22 6l-3-3"/>
+              <path d="M10 2h4"/>
+            </svg>
+          </span>
+          <div class="timing-info">
+            <span class="timing-label">Transcribed in:</span>
+            <span class="timing-value" id="timing">0.00 s</span>
+          </div>
+        </div>
+
+        <div class="actions-group">
+          <!-- Clear Button -->
+          <button class="btn btn-outline" id="clear" type="button">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            </svg>
+            <span>Clear</span>
+          </button>
+
+          <!-- Copy Text Button -->
+          <button class="btn btn-primary" id="copy" type="button">
+            <svg id="copy-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            <span id="copy-label">Copy text</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
